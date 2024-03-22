@@ -1,0 +1,20 @@
+name: SPlugin
+main: com.sebotimes.SPlugin
+version: 1.0
+api-version: 1.20
+
+author: SeboTimes
+website: sebotimes.com
+
+commands:
+  ping:
+    description: Displays your ping in ms.
+    usage: /ping
+  smap:
+    description: Create a Map from a URL.
+    usage: /smap [URL]
+  sparticle:
+    description: Set a Particle Trail for a Player.
+    usage: /sparticle [set/remove] [Player] [Particle]
+    permission: splugin.sparticle
+    permission-message: You're not allowed to set or change Particle Trails!
