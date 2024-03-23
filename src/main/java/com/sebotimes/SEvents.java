@@ -3,6 +3,7 @@ package com.sebotimes;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,12 +14,11 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class SEvents implements Listener {
-    JavaPlugin plugin;
-    public SEvents(JavaPlugin plugin) {
-        this.plugin = plugin;
+    private final Configuration config;
+    public SEvents(Configuration config) {
+        this.config = config;
     }
 
     @EventHandler
@@ -26,23 +26,28 @@ public class SEvents implements Listener {
         e.getPlayer().setCompassTarget(e.getPlayer().getLastDeathLocation());
 
         String playerName = e.getPlayer().getName();
-        if (plugin.getConfig().isSet(playerName)) {
+        if (config.isSet("sparticle."+playerName)) {
             e.getPlayer().getWorld().spawnParticle(
-                    Particle.valueOf((String)plugin.getConfig().get(playerName)),
-                    e.getPlayer().getLocation().add(0, 0.1, 0),
-                    0
+                Particle.valueOf(config.getString("sparticle."+playerName)),
+                e.getPlayer().getLocation().add(0, 0.1, 0),
+                0
             );
         }
     }
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
-        e.getEntity().getWorld().dropItemNaturally(
-                e.getEntity().getLocation(),
-                SFunctions.createPlayerHead(e.getEntity())
-        );
+        Player killer = e.getEntity().getKiller();
+        if (killer != null) {
+            e.setDeathMessage(String.format("%s beheaded %s", killer.getName(), e.getEntity().getName()));
+
+            e.getEntity().getWorld().dropItemNaturally(
+                    e.getEntity().getLocation(),
+                    SFunctions.createPlayerHead(e.getEntity())
+            );
+        }
     }
     @EventHandler
-    public void onPlayerLevelChange(FurnaceSmeltEvent e) {
+    public void onFurnaceSmelt(FurnaceSmeltEvent e) {
         e.getBlock().getWorld().playSound(e.getBlock().getLocation(), Sound.ENTITY_GENERIC_BURN, 1, 0);
     }
 
