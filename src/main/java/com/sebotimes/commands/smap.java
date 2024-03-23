@@ -18,7 +18,9 @@ public class smap implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        if (!(commandSender instanceof Player)) return true;
         Player player = (Player) commandSender;
+
         if (strings.length == 1) {
             MapView mapView = player.getServer().createMap(player.getWorld());
             ItemStack map = SFunctions.createWebMap(mapView, strings[0]);

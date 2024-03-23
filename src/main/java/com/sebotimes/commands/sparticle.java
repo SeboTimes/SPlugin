@@ -3,7 +3,6 @@ package com.sebotimes.commands;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class sparticle implements CommandExecutor {
@@ -14,8 +13,7 @@ public class sparticle implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        Player player = (Player) commandSender;
-        if (command.getName().equals("sparticle") && commandSender.isOp() && strings.length > 0) {
+        if (commandSender.hasPermission("splugin.sparticle") && strings.length > 0) {
             if (strings[0].equals("set") && strings.length == 3) {
                 plugin.getConfig().set(strings[1], strings[2]);
                 plugin.saveConfig();
