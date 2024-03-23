@@ -14,7 +14,7 @@ public class sparticle implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if (!(commandSender instanceof Player)) return true;
+        if (!(command instanceof Player)) return true;
         Player player = (Player) commandSender;
 
         if (strings[0].equals("set") && strings.length == 2) {
