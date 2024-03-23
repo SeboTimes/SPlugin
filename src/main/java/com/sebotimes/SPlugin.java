@@ -9,7 +9,7 @@ public class SPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         getLogger().info("SPlugin loaded!");
-        getServer().getPluginManager().registerEvents(new SEvents(getConfig()), this);
+        getServer().getPluginManager().registerEvents(new SEvents(this), this);
 
         getCommand("ping").setExecutor(new ping());
         getCommand("sparticle").setExecutor(new sparticle(this));

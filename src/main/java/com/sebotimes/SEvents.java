@@ -14,11 +14,12 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class SEvents implements Listener {
-    private final Configuration config;
-    public SEvents(Configuration config) {
-        this.config = config;
+    private final JavaPlugin plugin;
+    public SEvents(JavaPlugin plugin) {
+        this.plugin = plugin;
     }
 
     @EventHandler
@@ -26,9 +27,9 @@ public class SEvents implements Listener {
         e.getPlayer().setCompassTarget(e.getPlayer().getLastDeathLocation());
 
         String playerName = e.getPlayer().getName();
-        if (config.isSet("sparticle."+playerName)) {
+        if (plugin.getConfig().isSet("sparticle."+playerName)) {
             e.getPlayer().getWorld().spawnParticle(
-                Particle.valueOf(config.getString("sparticle."+playerName)),
+                Particle.valueOf(plugin.getConfig().getString("sparticle."+playerName)),
                 e.getPlayer().getLocation().add(0, 0.1, 0),
                 0
             );
